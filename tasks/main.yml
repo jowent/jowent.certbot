@@ -1,2 +1,13 @@
 ---
-# tasks file for jowent.certbot
+
+- name: certbot dependencies installed
+  apt: pkg=software-properties-common state=present update_cache=yes
+
+- name: Add certbot repository from PPA and install its signing key.
+  apt_repository: repo='ppa:certbot/certbot'
+
+- name: certbot and nginx plugin installed
+  apt: pkg=python-certbot-nginx state=present update_cache=yes
+
+# cronjobs already installed by the package!
+
