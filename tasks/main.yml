@@ -9,5 +9,23 @@
 - name: certbot and nginx plugin installed
   apt: pkg=python-certbot-nginx state=present update_cache=yes
 
-# cronjobs already installed by the package!
+- name: Make directory for nginx config backup
+  file:
+    path=/etc/nginx/sites-enabled-pre-certbot/
+    state=directory
+    owner=root
+    group=root
+    mode=0755
 
+- name: backup existing nginx configuration
+  copy: src={{ item }}
+        remote_src=yes
+        dest=/etc/nginx/sites-enabled-pre-certbot/
+        owner=root
+        group=root
+        mode=0644
+        force=no
+  with_fileglob:
+    - /etc/nginx/sites-enabled/*
+
+# cronjobs already installed by the package!
